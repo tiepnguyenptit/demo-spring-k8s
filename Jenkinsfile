@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('Clone target branch') {
         steps {
-            git branch: env.gitlabTargetBranch, url: 'https://tiepnguyenptit:mrtomjava@06@github.com/tiepnguyenptit/demo-spring-k8s'
+            git branch: env.gitlabTargetBranch, url: 'https://tiepnguyenptit/demo-spring-k8s'
         }
     }
     stage('Build JAR') {
