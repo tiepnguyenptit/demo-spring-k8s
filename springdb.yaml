@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdb
+spec:
+  selector: 
+    matchLabels:
+      app: springdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: springdb
+      name: springdb
+    spec:
+      containers:
+      - image: mongo:4.0.4
+        name: springdb
+        ports:
+        - containerPort: 27017
+          name: springdb
+        env:
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-creds
+              key: password
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-creds
+              key: username
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springdb
+spec:
+  selector:
+      app: springdb
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    app: springdb
+  clusterIP: None

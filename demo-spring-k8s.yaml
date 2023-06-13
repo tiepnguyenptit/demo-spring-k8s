@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-spring-k8s
+spec:
+  selector:
+    matchLabels:
+      app: demo-spring-k8s
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-spring-k8s
+    spec:
+      containers:
+        - name: demo-spring-k8s
+          image: tiepnguyenptit/demo-spring-k8s
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+      hostNetwork: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-spring-k8s
+spec:
+  selector:
+    app: demo-spring-k8s
+  ports:
+    - protocol: "TCP"
+      port: 8081
+      targetPort: 8081
+  type: NodePort
