@@ -1,7 +1,7 @@
 pipeline {
   agent any
   tools {
-    jdk 'Java 17'
+    jdk 'jdk-17'
   }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
@@ -13,20 +13,19 @@ pipeline {
   stages {
     stage('Clone target branch') {
         steps {
-            git branch: env.gitlabTargetBranch, url: 'https://$GIT_CREDENTIALS_USR:$GIT_CREDENTIALS_PSW@gitlab.com/mpa1998.mpa/spring-demo-ocs.git'
+            git branch: env.gitlabTargetBranch, url: 'https://tiepnguyenptit:mrtomjava@06@github.com/tiepnguyenptit/demo-spring-k8s'
         }
     }
     stage('Build JAR') {
         steps {
             sh '''#!/bin/bash
-            	cd springserver
-            	./gradlew clean build
+            	./mvn clean install
             	'''
         }
     }
     stage('Build') {
       steps {
-        sh 'docker build -t mpa1998/springdemo -f springserver/Dockerfile .'
+        sh 'docker build -t demo-spring-k8s:0.0.1 .'
       }
     }
     stage('Login') {
@@ -36,15 +35,8 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push mpa1998/springdemo'
+        sh 'docker push tiepnguyenptit/demo-spring-k8s'
       }
-    }
-    stage('Trigger K8s job') {
-        steps {
-            build job: "Spring Demo OCS K8s", wait: false, parameters: [
-                [$class: 'StringParameterValue', name: 'gitlabTargetBranch', value: env.gitlabTargetBranch]
-            ]
-        }
     }
   }
   post {

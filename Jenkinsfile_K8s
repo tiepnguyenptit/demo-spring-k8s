@@ -1,0 +1,24 @@
+pipeline {
+  agent {
+    label 'kubepod'
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+
+  stages {
+    stage('Deploying Kubernetes') {
+      steps {
+        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+            sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+            sh 'chmod u+x ./kubectl'
+            sh './kubectl apply -f springdb-secrets.yaml'
+            sh './kubectl apply -f springdb.yaml'
+            sh './kubectl apply -f demo-spring-k8s.yaml'
+            sh './kubectl get services'
+        }
+      }
+    }
+  }
+}
