@@ -21,7 +21,7 @@ pipeline {
     stage('Build JAR') {
         steps {
             sh '''#!/bin/bash
-            	./mvn clean install
+            	mvn clean install
             	'''
         }
     }
