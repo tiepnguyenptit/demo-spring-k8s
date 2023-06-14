@@ -1,21 +1,17 @@
 pipeline {
   agent any
-  tools {
-    jdk 'jdk-17'
-  }
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '5'))
-  }
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
 
   stages {
-    stage('Build JAR') {
-        steps {
-            sh 'mvn clean install'
-        }
-    }
+    stage('Clone Repo') {
+          // for display purposes
+          // Get some code from a GitHub repository
+          git url: 'https://github.com/tiepnguyenptit/demo-spring-k8s',
+              credentialsId: 'tiepnguyenptit-git-account',
+              branch: 'main'
+   }
     stage('Build') {
       steps {
         sh 'docker build -t demo-spring-k8s:0.0.1 .'
