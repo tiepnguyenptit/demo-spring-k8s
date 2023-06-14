@@ -12,16 +12,14 @@ pipeline {
 
   stages {
     stage('Clone target branch') {
-        steps {
-            sh '''#!/bin/bash
-                        	git clone https://github.com/tiepnguyenptit/demo-spring-k8s
-                        	'''
+            steps {
+                git branch: main, url: 'https://tiepnguyenptit:mrtomjava@06@github.com/tiepnguyenptit/demo-spring-k8s'
+            }
         }
-    }
     stage('Build JAR') {
         steps {
             sh '''#!/bin/bash
-            	mvn clean install
+            	./mvnw clean install
             	'''
         }
     }
