@@ -13,7 +13,6 @@ pipeline {
   stages {
     stage('Build JAR') {
         steps {
-            sh 'chmod +x mvnw'
             sh 'mvn clean install'
         }
     }
