@@ -11,11 +11,6 @@ pipeline {
   }
 
   stages {
-    stage('Clone target branch') {
-            steps {
-                git branch: main, url: 'https://tiepnguyenptit:mrtomjava@06@github.com/tiepnguyenptit/demo-spring-k8s'
-            }
-        }
     stage('Build JAR') {
         steps {
             sh '''#!/bin/bash
