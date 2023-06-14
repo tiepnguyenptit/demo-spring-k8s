@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t demo-spring-k8s:0.0.1 .'
+        sh 'docker build -t tiepnguyenptit/demo-spring-k8s .'
       }
     }
     stage('Login') {
