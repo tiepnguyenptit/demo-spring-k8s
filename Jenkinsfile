@@ -13,9 +13,8 @@ pipeline {
   stages {
     stage('Build JAR') {
         steps {
-            sh '''#!/bin/bash
-            	./mvnw clean install
-            	'''
+            sh 'chmod +x mvnw'
+            sh './mvnw clean install'
         }
     }
     stage('Build') {
